@@ -111,5 +111,21 @@ public class Field {
         //Добавляем недостающие строки в начало списка.
         //Преобразуем список обратно в матрицу
 
+        ArrayList<int[]>LineList=new ArrayList();
+        for (int i = 0; i < matrix.length; i++) {
+            int count=0;
+            for (int j = 0; j < matrix[i].length; j++) {
+                count+=matrix[i][j];
+            }
+            if (count != matrix[i].length) {
+                LineList.add(matrix[i]);
+            }
+        }
+        while (LineList.size()<height){
+            LineList.add(0,new int[width]);
+        }
+        for (int i = 0; i < matrix.length; i++) {
+            matrix[i]=LineList.get(i);
+        }
     }
 }
