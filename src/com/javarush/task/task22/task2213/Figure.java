@@ -23,11 +23,25 @@ public class Figure {
         this.matrix = matrix;
     }
     public void left(){
-
+        if (isCurrentPositionAvailable()) {
+            this.x=this.x-1;
+        }
     }
-    public void right(){}
-    public void down(){}
-    public void up(){}
+    public void right(){
+        if (isCurrentPositionAvailable()) {
+            this.x=this.x+1;
+        }
+    }
+    public void down(){
+        if (isCurrentPositionAvailable()) {
+            this.y=this.y+1;
+        }
+    }
+    public void up(){
+        if (isCurrentPositionAvailable()) {
+            this.y=this.y-1;
+        }
+    }
     public void rotate(){}
     public void downMaximum(){}
     public boolean isCurrentPositionAvailable(){
