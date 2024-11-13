@@ -46,5 +46,28 @@ public class Solution {
         System.out.println(logParser.getIPsForEvent(WRITE_MESSAGE, date1, null));
         System.out.println(logParser.getIPsForEvent(WRITE_MESSAGE, date1, date2));
 
+        System.out.println("________________________________________________________________________________________");
+        System.out.println(logParser.getAllUsers());
+
+        System.out.println("________________________________________________________________________________________");
+        System.out.println(logParser.getNumberOfUsers(null, null));
+        System.out.println(logParser.getNumberOfUsers(null, date2));
+        System.out.println(logParser.getNumberOfUsers(date1, null));
+        System.out.println(logParser.getNumberOfUsers(date1, date2));
+
+        System.out.println("________________________________________________________________________________________");
+        System.out.println(logParser.getNumberOfUserEvents("Eduard Petrovich Morozko", null, null));
+        System.out.println(logParser.getNumberOfUserEvents("Eduard Petrovich Morozko",null, date2));
+        System.out.println(logParser.getNumberOfUserEvents("Eduard Petrovich Morozko",date1, null));
+        System.out.println(logParser.getNumberOfUserEvents("Eduard Petrovich Morozko",date1, date2));
+
+        System.out.println("________________________________________________________________________________________");
+        System.out.println(logParser.getUsersForIP("127.0.0.1", null, null));
+        System.out.println(logParser.getUsersForIP("127.0.0.1",null, date2));
+        System.out.println(logParser.getUsersForIP("127.0.0.1",date1, null));
+        System.out.println(logParser.getUsersForIP("127.0.0.1",date1, date2));
+
+
+
     }
 }

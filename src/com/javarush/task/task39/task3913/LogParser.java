@@ -1,6 +1,7 @@
 package com.javarush.task.task39.task3913;
 
 import com.javarush.task.task39.task3913.query.IPQuery;
+import com.javarush.task.task39.task3913.query.UserQuery;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -13,191 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class LogParser implements IPQuery {
-    /*TreeMap<RecordEvent, String> data = new TreeMap<>(Comparator.comparing(o -> o.getDate()));
-    Path path;
-
-    public LogParser(Path logDir) {
-        this.path = logDir;
-        readLogFile();
-    }
-
-    @Override
-    public int getNumberOfUniqueIPs(Date after, Date before) {
-       return getUniqueIPs(after,before).size();
-    }
-
-    @Override
-    public Set<String> getUniqueIPs(Date after, Date before) {
-        Map<RecordEvent, String> submap;
-        Set<String> values = new LinkedHashSet<>();
-        if (after != null && before != null) {
-            RecordEvent eventfirst = data.keySet().stream().filter(e -> e.getDate().after(after)).findFirst().get();
-            RecordEvent eventlast = data.descendingKeySet().stream().filter(e -> e.getDate().before(before)).findFirst().get();
-            submap = data.subMap(eventfirst, true, eventlast, true);
-            values.addAll(submap.values());
-        } else if (before!=null) {
-            RecordEvent eventlast = data.descendingKeySet().stream().filter(e -> e.getDate().before(before)).findFirst().get();
-            submap = data.headMap(eventlast,true);
-            values.addAll(submap.values());
-        } else if (after!=null) {
-            RecordEvent eventfirst = data.keySet().stream().filter(e -> e.getDate().after(after)).findFirst().get();
-            submap=data.tailMap(eventfirst,true);
-            values.addAll(submap.values());
-        }else {
-            Collection<String> strings=data.values();
-            values.addAll(data.values());
-        }
-        return values;
-    }
-
-    @Override
-    public Set<String> getIPsForUser(String user, Date after, Date before) {
-        Map<RecordEvent, String> submap;
-        Set<String> values = new HashSet<>();
-        if (after != null && before != null) {
-            RecordEvent eventfirst = data.keySet().stream()
-                    .filter(e -> e.getDate().after(after))
-                    .filter(e->e.getUser().equals(user)).findFirst().get();
-            RecordEvent eventlast = data.descendingKeySet().stream()
-                    .filter(e -> e.getDate().before(before))
-                    .filter(e->e.getUser().equals(user))
-                    .findFirst().get();
-            submap = data.subMap(eventfirst, true, eventlast, true);
-            values.addAll(submap.values());
-        } else if (before!=null) {
-            RecordEvent eventlast = data.descendingKeySet().stream()
-                    .filter(e->e.getUser().equals(user))
-                    .filter(e -> e.getDate().before(before)).findFirst().get();
-            submap = data.headMap(eventlast,true);
-            values.addAll(submap.values());
-        } else if (after!=null) {
-            RecordEvent eventfirst = data.keySet().stream()
-                    .filter(e->e.getUser().equals(user))
-                    .filter(e -> e.getDate().after(after)).findFirst().get();
-            submap=data.tailMap(eventfirst,true);
-            values.addAll(submap.values());
-        }else {
-            for (Map.Entry<RecordEvent,String> entry:data.entrySet()
-                 ) {
-                if (entry.getKey().getUser().equals(user)) {
-                    values.add(entry.getValue());
-                }
-            }
-        }
-        return values;
-    }
-
-    @Override
-    public Set<String> getIPsForEvent(Event event, Date after, Date before) {
-        Map<RecordEvent, String> submap;
-        Set<String> values = new HashSet<>();
-        if (after != null && before != null) {
-            RecordEvent eventfirst = data.keySet().stream()
-                    .filter(e->e.getEvent().equals(event))
-                    .filter(e -> e.getDate().after(after)).findFirst().get();
-            RecordEvent eventlast = data.descendingKeySet().stream()
-                    .filter(e->e.getEvent().equals(event))
-                    .filter(e -> e.getDate().before(before)).findFirst().get();
-            submap = data.subMap(eventfirst, true, eventlast, true);
-            values.addAll(submap.values());
-        } else if (before!=null) {
-            RecordEvent eventlast = data.descendingKeySet().stream()
-                    .filter(e->e.getEvent().equals(event))
-                    .filter(e -> e.getDate().before(before)).findFirst().get();
-            submap = data.headMap(eventlast,true);
-            values.addAll(submap.values());
-        } else if (after!=null) {
-            RecordEvent eventfirst = data.keySet().stream()
-                    .filter(e->e.getEvent().equals(event))
-                    .filter(e -> e.getDate().after(after)).findFirst().get();
-            submap=data.tailMap(eventfirst,true);
-            values.addAll(submap.values());
-        }else {
-            for (Map.Entry<RecordEvent,String> entry:data.entrySet()
-            ) {
-                if (entry.getKey().getEvent().equals(event)) {
-                    values.add(entry.getValue());
-                }
-            }
-        }
-        return values;
-    }
-
-    @Override
-    public Set<String> getIPsForStatus(Status status, Date after, Date before) {
-        Map<RecordEvent, String> submap;
-        Set<String> values = new HashSet<>();
-        if (after != null && before != null) {
-            RecordEvent eventfirst = data.keySet().stream()
-                    .filter(e->e.getStatus().equals(status))
-                    .filter(e -> e.getDate().after(after)).findFirst().get();
-            RecordEvent eventlast = data.descendingKeySet().stream()
-                    .filter(e->e.getStatus().equals(status))
-                    .filter(e -> e.getDate().before(before)).findFirst().get();
-            submap = data.subMap(eventfirst, true, eventlast, true);
-            values.addAll(submap.values());
-        } else if (before!=null) {
-            RecordEvent eventlast = data.descendingKeySet().stream()
-                    .filter(e->e.getStatus().equals(status))
-                    .filter(e -> e.getDate().before(before)).findFirst().get();
-            submap = data.headMap(eventlast,true);
-            values.addAll(submap.values());
-        } else if (after!=null) {
-            RecordEvent eventfirst = data.keySet().stream()
-                    .filter(e->e.getStatus().equals(status))
-                    .filter(e -> e.getDate().after(after)).findFirst().get();
-            submap=data.tailMap(eventfirst,true);
-            values.addAll(submap.values());
-        }else {
-            for (Map.Entry<RecordEvent,String> entry:data.entrySet()
-            ) {
-                if (entry.getKey().getStatus().equals(status)) {
-                    values.add(entry.getValue());
-                }
-            }
-        }
-        return values;
-    }
-
-    private void readLogFile() {
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(path, "*.log")) {
-            for (Path entry : stream
-            ) {
-                List<String> list = Files.readAllLines(entry);
-                for (String s : list
-                ) {
-                    RecordEvent recordEvent = getRecordEvent(s);
-                    data.put(recordEvent, recordEvent.getIp());
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private RecordEvent getRecordEvent(String string) {
-        RecordEvent result = new RecordEvent();
-        String[] lines = string.split("\t");
-        result.setIp(lines[0]);
-        result.setUser(lines[1]);
-        DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.ENGLISH);
-        try {
-            result.setDate(format.parse(lines[2]));
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (lines[3].contains("_TASK")) {
-            String[] tasks = lines[3].split(" ");
-            result.setEvent(Event.valueOf(tasks[0]));
-            result.setTask(Integer.parseInt(tasks[1]));
-        } else {
-            result.setEvent(Event.valueOf(lines[3]));
-        }
-        result.setStatus(Status.valueOf(lines[4]));
-        return result;
-    }*/
+public class LogParser implements IPQuery, UserQuery {
     private Path logDir;
     private List<LogEntity> logEntities = new ArrayList<>();
     private DateFormat simpleDateFormat = new SimpleDateFormat("d.M.yyyy H:m:s");
@@ -367,6 +184,157 @@ public class LogParser implements IPQuery {
             before = new Date(Long.MAX_VALUE);
         }
         return current.after(after) && current.before(before);
+    }
+
+    @Override
+    public Set<String> getAllUsers() {
+        Set<String>result=new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+           result.add(entity.user);
+        }
+        return result;
+    }
+
+    @Override
+    public int getNumberOfUsers(Date after, Date before) {
+        Set<String>result=new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+            if (dateBetweenDates(entity.getDate(),after,before)) {
+                result.add(entity.user);
+            }
+        }
+        return result.size();
+    }
+
+    @Override
+    public int getNumberOfUserEvents(String user, Date after, Date before) {
+        Set<Event> result = new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+            if (dateBetweenDates(entity.getDate(),after,before)) {
+                if (entity.user.equals(user)) {
+                    result.add(entity.getEvent());
+                }
+            }
+        }
+        return result.size();
+
+    }
+
+    @Override
+    public Set<String> getUsersForIP(String ip, Date after, Date before) {
+        Set<String>result=new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+            if (dateBetweenDates(entity.getDate(),after,before)) {
+                if (entity.getIp().equals(ip)) {
+                    result.add(entity.user);
+                }
+
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Set<String> getLoggedUsers(Date after, Date before) {
+        Set<String>result=new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+            if (dateBetweenDates(entity.getDate(),after,before)) {
+                if (entity.getEvent().equals(Event.LOGIN)) {
+                    result.add(entity.user);
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Set<String> getDownloadedPluginUsers(Date after, Date before) {
+        Set<String>result=new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+            if (dateBetweenDates(entity.getDate(),after,before)) {
+                if (entity.getEvent().equals(Event.DOWNLOAD_PLUGIN)) {
+                    result.add(entity.user);
+                }
+            }
+        }
+        return result;
+
+    }
+
+    @Override
+    public Set<String> getWroteMessageUsers(Date after, Date before) {
+        Set<String>result=new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+            if (dateBetweenDates(entity.getDate(),after,before)) {
+                if (entity.getEvent().equals(Event.WRITE_MESSAGE)) {
+                    result.add(entity.user);
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Set<String> getSolvedTaskUsers(Date after, Date before) {
+        Set<String>result=new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+            if (dateBetweenDates(entity.getDate(),after,before)) {
+                if (entity.getEvent().equals(Event.SOLVE_TASK)) {
+                    result.add(entity.user);
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Set<String> getSolvedTaskUsers(Date after, Date before, int task) {
+        Set<String>result=new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+            if (dateBetweenDates(entity.getDate(),after,before)) {
+                if (entity.getEvent().equals(Event.SOLVE_TASK)&&entity.getEventAdditionalParameter()==task) {
+                    result.add(entity.user);
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Set<String> getDoneTaskUsers(Date after, Date before) {
+        Set<String>result=new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+            if (dateBetweenDates(entity.getDate(),after,before)) {
+                if (entity.getEvent().equals(Event.DONE_TASK)) {
+                    result.add(entity.user);
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Set<String> getDoneTaskUsers(Date after, Date before, int task) {
+        Set<String>result=new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+            if (dateBetweenDates(entity.getDate(),after,before)) {
+                if (entity.getEvent().equals(Event.DONE_TASK)&&entity.getEventAdditionalParameter()==task) {
+                    result.add(entity.user);
+                }
+            }
+        }
+        return result;
     }
 
     private class LogEntity {
