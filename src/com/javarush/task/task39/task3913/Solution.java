@@ -71,6 +71,11 @@ public class Solution {
         System.out.println(logParser.getDateWhenUserLoggedFirstTime("Amigo", null, null));
         System.out.println(logParser.getDateWhenUserSolvedTask("Amigo", 18, null, null));
 
+        System.out.println(logParser.getNumberOfAttemptToSolveTask(18,null,null));
+        System.out.println(logParser.getNumberOfSuccessfulAttemptToSolveTask(18,null,null));
+        System.out.println(logParser.getAllSolvedTasksAndTheirNumber(date1,null));
+        System.out.println(logParser.getAllDoneTasksAndTheirNumber(date1,null));
+
 
 
     }
