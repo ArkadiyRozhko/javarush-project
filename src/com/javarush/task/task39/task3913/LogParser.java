@@ -1,5 +1,6 @@
 package com.javarush.task.task39.task3913;
 
+import com.javarush.task.task39.task3913.query.DateQuery;
 import com.javarush.task.task39.task3913.query.IPQuery;
 import com.javarush.task.task39.task3913.query.UserQuery;
 
@@ -14,7 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class LogParser implements IPQuery, UserQuery {
+public class LogParser implements IPQuery, UserQuery, DateQuery {
     private Path logDir;
     private List<LogEntity> logEntities = new ArrayList<>();
     private DateFormat simpleDateFormat = new SimpleDateFormat("d.M.yyyy H:m:s");
@@ -331,6 +332,148 @@ public class LogParser implements IPQuery, UserQuery {
             if (dateBetweenDates(entity.getDate(),after,before)) {
                 if (entity.getEvent().equals(Event.DONE_TASK)&&entity.getEventAdditionalParameter()==task) {
                     result.add(entity.user);
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Set<Date> getDatesForUserAndEvent(String user, Event event, Date after, Date before) {
+        Set<Date>result=new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+            if (dateBetweenDates(entity.getDate(),after,before)) {
+                if (entity.getUser().equals(user)&&entity.getEvent().equals(event)) {
+                    result.add(entity.getDate());
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Set<Date> getDatesWhenSomethingFailed(Date after, Date before) {
+        Set<Date>result=new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+            if (dateBetweenDates(entity.getDate(),after,before)) {
+                if (entity.getStatus().equals(Status.FAILED)) {
+                    result.add(entity.getDate());
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Set<Date> getDatesWhenErrorHappened(Date after, Date before) {
+        Set<Date>result=new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+            if (dateBetweenDates(entity.getDate(),after,before)) {
+                if (entity.getStatus().equals(Status.ERROR)) {
+                    result.add(entity.getDate());
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Date getDateWhenUserLoggedFirstTime(String user, Date after, Date before) {
+        Set<Date>result=new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+            if (dateBetweenDates(entity.getDate(),after,before)) {
+                if (entity.getUser().equals(user)&&entity.getEvent().equals(Event.LOGIN)) {
+                    result.add(entity.getDate());
+                }
+            }
+        }
+        if (result.size() == 0) {
+            return null;
+        }
+        Date date= result.iterator().next();
+        for (Date d:result
+             ) {
+            if (d.getTime()<date.getTime()) {
+                date=d;
+            }
+        }
+        return date;
+    }
+
+    @Override
+    public Date getDateWhenUserSolvedTask(String user, int task, Date after, Date before) {
+        Set<Date>result=new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+            if (dateBetweenDates(entity.getDate(),after,before)) {
+                if (entity.getUser().equals(user)&&entity.getEvent().equals(Event.SOLVE_TASK)&&entity.getEventAdditionalParameter()==task) {
+                    result.add(entity.getDate());
+                }
+            }
+        }
+        if (result.isEmpty()) {
+            return null;
+        }
+        Date date= result.iterator().next();
+        for (Date d:result
+        ) {
+            if (d.getTime()<date.getTime()) {
+                date=d;
+            }
+        }
+        return date;
+    }
+
+    @Override
+    public Date getDateWhenUserDoneTask(String user, int task, Date after, Date before) {
+        Set<Date>result=new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+            if (dateBetweenDates(entity.getDate(),after,before)) {
+                if (entity.getUser().equals(user)&&entity.getEvent().equals(Event.DONE_TASK)&&entity.getEventAdditionalParameter()==task) {
+                    result.add(entity.getDate());
+                }
+            }
+        }
+        if (result.isEmpty()) {
+            return null;
+        }
+        Date date= result.iterator().next();
+        for (Date d:result
+        ) {
+            if (d.getTime()<date.getTime()) {
+                date=d;
+            }
+        }
+        return date;
+    }
+
+    @Override
+    public Set<Date> getDatesWhenUserWroteMessage(String user, Date after, Date before) {
+        Set<Date>result=new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+            if (dateBetweenDates(entity.getDate(),after,before)) {
+                if (entity.getUser().equals(user)&&entity.getEvent().equals(Event.WRITE_MESSAGE)) {
+                    result.add(entity.getDate());
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Set<Date> getDatesWhenUserDownloadedPlugin(String user, Date after, Date before) {
+        Set<Date>result=new HashSet<>();
+        for (LogEntity entity : logEntities
+        ){
+            if (dateBetweenDates(entity.getDate(),after,before)) {
+                if (entity.getUser().equals(user)&&entity.getEvent().equals(Event.DOWNLOAD_PLUGIN)) {
+                    result.add(entity.getDate());
                 }
             }
         }

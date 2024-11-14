@@ -67,6 +67,10 @@ public class Solution {
         System.out.println(logParser.getUsersForIP("127.0.0.1",date1, null));
         System.out.println(logParser.getUsersForIP("127.0.0.1",date1, date2));
 
+        System.out.println("________________________________________________________________________________________");
+        System.out.println(logParser.getDateWhenUserLoggedFirstTime("Amigo", null, null));
+        System.out.println(logParser.getDateWhenUserSolvedTask("Amigo", 18, null, null));
+
 
 
     }
