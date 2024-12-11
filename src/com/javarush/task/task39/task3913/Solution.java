@@ -77,7 +77,7 @@ public class Solution {
 //        System.out.println(logParser.getAllSolvedTasksAndTheirNumber(date1,null));
 //        System.out.println(logParser.getAllDoneTasksAndTheirNumber(date1,null));
 
-        Set set=logParser.execute("get ip for user = \"Amigo\"");
+        Set set=logParser.execute("get ip for user = \"Eduard Petrovich Morozko\" and date between \"11.12.2013 0:00:00\" and \"03.01.2014 23:59:59\"");
         for(Object obj:set){
             System.out.println(obj);
         }
