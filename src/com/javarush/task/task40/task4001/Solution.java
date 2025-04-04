@@ -14,7 +14,8 @@ POST, а не GET
 public class Solution {
     public static void main(String[] args) throws Exception {
         Solution solution = new Solution();
-        solution.sendPost(new URL("http://requestb.in/1cse9qt1"), "name=zapp&mood=good&locale=&id=777");
+        //solution.sendPost(new URL("http://requestb.in/1cse9qt1"), "name=zapp&mood=good&locale=&id=777");
+        solution.sendPost(new URL("https://eohtb2o02h5bdyg.m.pipedream.net"), "name=zapp&mood=good&locale=&id=777");
     }
 
     public void sendPost(URL url, String urlParameters) throws Exception {
