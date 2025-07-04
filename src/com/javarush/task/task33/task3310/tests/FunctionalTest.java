@@ -5,6 +5,8 @@ import com.javarush.task.task33.task3310.strategy.*;
 import org.junit.Assert;
 import org.junit.Test;
 
+
+
 public class FunctionalTest {
     public void testStorage(Shortener shortener){
             String str1="String 1 and 3";
